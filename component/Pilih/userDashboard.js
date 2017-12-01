@@ -41,6 +41,7 @@ export default class userDashboard extends Component {
         eventLocation : '',
         eventPicture : '',
         modalVisible : false,
+        modalMenu : false,
         modalListEvent : false,
         modalPhoto : "uri",
         modalTitle : '',
@@ -72,6 +73,7 @@ export default class userDashboard extends Component {
 
   gotoFollowing=()=>{
     const { navigate } = this.props.navigation;
+    this.setState({modalMenu : false});
     BackHandler.removeEventListener('hardwareBackPress', this.backPressed);
     navigate("Following",{onselectNewsDashboard: this. onselectNewsDashboard});
   }
@@ -253,7 +255,6 @@ renderRow(rowData){
     const { navigate } = this.props.navigation;
     return (
       <Container style={{backgroundColor : "white"}}>
-          <Content>
             <Modal
                 animationType = {"fade"}
                 transparent   = {true}
@@ -336,8 +337,49 @@ renderRow(rowData){
               </TouchableWithoutFeedback>
             </Modal>
 
+            <View style={{width : width,height : 80, backgroundColor : 'white', borderBottomWidth : 0.3, flexDirection : 'row', paddingTop : 40}}>
+                <TouchableOpacity onPress={()=>this.backPressed()}>
+                    <Icon name="arrow-back" style={{color : 'black', marginLeft : 10}}/>
+                </TouchableOpacity>
+                <Text style={{color : "black", fontSize : 20, marginLeft : width/3}}>Profile</Text>
+                <View style={{position : 'absolute', right : 10, top : 40}}>
+                <TouchableOpacity onPress={()=>this.setState({modalMenu : true})}>
+                      <Icon name="menu" style={{color : 'black'}}/>
+                </TouchableOpacity>
+                </View>
+            </View>
 
               <Card style={{ flex: 0 }}>
+                <View style={{ width : 20, height : 25, position : 'absolute', zIndex : 1, right : 5, top : 20}}>
+          
+                    <Modal
+                      animationType = {"fade"}
+                      transparent   = {true}
+                      visible       = {this.state.modalMenu} onRequestClose ={()=>{this.setState({modalMenu : false});}}
+                     >
+                     <TouchableWithoutFeedback onPress={()=>this.setState({modalMenu : false})}>
+                      <View style={{width : width, height : height}}>
+                          <TouchableWithoutFeedback>
+                            <View style={{width : 150, height : 30, borderWidth : 0.3, borderRadius : 2, backgroundColor : "white", position : 'absolute', zIndex : 1, right : 8, borderColor : 'black', top : 20}}>
+                                <TouchableOpacity onPress={()=>this.gotoFollowing()}>
+                                  <Text style={{color : "black", fontSize : 18, marginLeft : 5}}>Following</Text>
+                                </TouchableOpacity>
+                            </View>
+                          </TouchableWithoutFeedback>
+                      </View>
+                     </TouchableWithoutFeedback>
+                     </Modal>
+                </View>
+                {/*photo profile user*/}
+                <TouchableOpacity style={{alignSelf : 'center', width : 100 }}
+                        onPress={()=>this.showProfile()}
+                      >
+                        <Image style={{alignSelf:'center',marginTop : 20, height : 100, width : 100, borderRadius : 100}} source={{uri:this.state.profilePhoto}} />
+                </TouchableOpacity>
+
+              {/*username disebelah photo profile*/}
+                <Text style={{alignSelf:'center', marginLeft:'3%', fontSize:25}}>{this.props.navigation.state.params.username}</Text>
+                
                   <CardItem style={{alignSelf:'center'}}>
                     {/*modal untuk menampilkan foto user dan menggantinya*/}
                     <Modal
@@ -385,23 +427,7 @@ renderRow(rowData){
                           </View>
                       </TouchableWithoutFeedback>
                     </Modal>
-
-                    {/*photo profile user*/}
-                    <TouchableOpacity 
-                      onPress={()=>this.showProfile()}
-                    >
-                      <Thumbnail style={{alignSelf:'center',marginTop : 10}} source={{uri:this.state.profilePhoto}} />
-                    </TouchableOpacity>
-
-                    {/*username disebelah photo profile*/}
-                    <Text style={{alignSelf:'center', marginLeft:'3%', fontSize:25}}>{this.props.navigation.state.params.username}</Text>
-                  </CardItem>
-
-                  <CardItem>
-                    <Button transparent style={{marginLeft:'2%'}} ><Text style={{fontSize:18}}>Followers.</Text><Text style={{fontSize:20, color:'orange', fontWeight:'bold'}}></Text></Button>
-                  <Button transparent style={{marginLeft:'5%'}} onPress={()=>this.gotoFollowing()} ><Text style={{fontSize:18, color:'orange'}} >Following.</Text><Text style={{fontSize:20, color:'orange', fontWeight:'bold'}}></Text></Button>
-                    <Body style={{backgroundColor: '#f2f2f2', height: 2}}></Body>
-                  </CardItem> 
+                    </CardItem>
                </Card>
                <Tabs >
                  {/* <Tab tabStyle={{backgroundColor: '#2f2f2f'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#3f3f3f'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}} heading={<TabHeading style={{backgroundColor:'#3a3838'}}><Text>1</Text></TabHeading>}>
@@ -434,7 +460,7 @@ renderRow(rowData){
                   </Tab>*/}
                   <Tab tabStyle={{backgroundColor: '#2f2f2f'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#3f3f3f'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}} heading={<TabHeading style={{backgroundColor:'#3a3838'}}><Text style={{color : "white"}}>My Event</Text></TabHeading>}>
                       {/*event disini*/}
-
+                  <Content>
                     <ListView
                     style={{marginTop : "2%"}}
                     dataSource={this.state.listSource}
@@ -446,7 +472,7 @@ renderRow(rowData){
                     color="#bc2b78"
                     size = 'large'
                      />
-
+                  </Content>
                    {/*
                       <ListItem avatar>
                           <Left>
@@ -471,7 +497,6 @@ renderRow(rowData){
                       </ListItem>
                   </Tab>*/} 
                 </Tabs>
-          </Content>
       </Container>
     );
   }

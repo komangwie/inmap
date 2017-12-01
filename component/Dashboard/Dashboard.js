@@ -19,10 +19,14 @@ import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoder';
 import Drawer from 'react-native-drawer';
 import { StackNavigator  } from 'react-navigation';
-import * as GLOBAL from '../../global-string/GLOBAL';
 import FontAwesome, { Icons } from 'react-native-fontawesome';
-import { Header,Container, Input, Content,Button, Icon,Tab,Tabs,Thumbnail, Fab, ListItem, Left, Body, Right, Item, DeckSwiper, Card, CardItem} from 'native-base';
+import {Container, Input, Content,Button, Icon,Thumbnail, Fab, ListItem, Item,Body} from 'native-base';
 import Carousel from 'react-native-snap-carousel';
+import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
+import {
+  SkypeIndicator,
+  BarIndicator,
+} from 'react-native-indicators';
 var{width,height}=Dimensions.get('window');
 
 var mapHeight = height + (height/10);
@@ -68,10 +72,28 @@ export default class Dashboard extends Component {
           wellcomeAnimating : true,
           listSource : new ListView.DataSource({rowHasChanged : (row1, row2)=> row1 !== row2}),
           selected: false,
+          loading : true
       };
       this.backButtonListener = null;
       this.currentRouteName = 'Main';
       this.lastBackButtonPress = null;
+
+      //check gps is on or not
+      LocationServicesDialogBox.checkLocationServicesIsEnabled({
+        message: "<h2>Use Location ?</h2>This app wants to change your device settings:<br/><br/>Use GPS, Wi-Fi, and cell network for location<br/><br/><a href='#'>Learn more</a>",
+        ok: "YES",
+        cancel: "NO",
+        enableHighAccuracy: true, // true => GPS AND NETWORK PROVIDER, false => ONLY GPS PROVIDER
+        showDialog: true, // false => Opens the Location access page directly
+        openLocationServices: true // false => Directly catch method is called if location services are turned off
+        }).then(function(success) {
+        //alert(JSON.stringify(success)); // success => {alreadyEnabled: false, enabled: true, status: "enabled"}
+
+        }).catch((error) => {
+            //alert(JSON.stringify(error.message)); // error.message => "disabled"
+    });
+    //check gps end
+    
   }
 
  onSelect = data => {
@@ -91,7 +113,8 @@ export default class Dashboard extends Component {
 gotoDetail=(parmId, parmImage, parmTitle, parmUid, parmUsername)=>{
   const { navigate } = this.props.navigation;
   BackHandler.removeEventListener('hardwareBackPress', this.backPressed);
-  navigate("Detail",{id:parmId, photoProfil : parmImage, title : parmTitle, userUid : parmUid, username : parmUsername, onSelect: this.onSelect });
+  navigate("Detail",{id:parmId, photoProfil : parmImage, title : parmTitle, userUid : parmUid, username : parmUsername,myLatitude : this.state.myLatitude, myLongitude : this.state.myLongitude
+    ,destinationLat : this.state.detail[this.state.currentIndex].latitude,destinationLong : this.state.detail[this.state.currentIndex].longitude, onSelect: this.onSelect });
 }
 
 gotoProfile=()=>{
@@ -408,7 +431,9 @@ catchMarker=(area)=>{
     });
    
   });
-
+  this.setState({
+    loading : false
+  });
   database.on("child_removed", (dataSnapshot)=>{
     this.state.detail = this.state.detail.filter((x)=>x.id !== dataSnapshot.key);
     this.state.markers = this.state.markers.filter((x)=>x.id !== dataSnapshot.key);
@@ -492,9 +517,12 @@ logout=()=>{
 
              {/*bagian untuk menampilkan image event*/}
               <View style={styles.eventImage} >
-                   <TouchableOpacity onPress={()=>this.focusToActiveEvent()}>
-                          <Image style={{height : 105, width : 65, alignSelf : "center", top : 2.5}} source={{uri:entry.eventImage}}/>
+                   <TouchableOpacity onPress={()=>this.focusToActiveEvent()} style={{zIndex : 3}}>
+                          <Image style={{height : 105, width : 65, alignSelf : "center", top : 2.5, zIndex : 1}} source={{uri:entry.eventImage}}/>
                     </TouchableOpacity>
+                    <View style={{position : 'absolute', alignSelf : 'center', marginTop : 50, zIndex : 1}}>
+                      < BarIndicator  count={5} color="orange" size={15}/>
+                   </View>
               </View>
             
              {/*bagian snap bar detail yang bisa dklik untuk menampilkandetail event*/}
@@ -572,7 +600,16 @@ logout=()=>{
 
       /** Drawer Content END **/
       >
-
+        <Modal animationType = {"fade"} transparent   = {true} visible  = {this.state.loading} >
+          <View style={{width : width, height : height, backgroundColor : "rgba(0, 0, 0, 0.5)"}}>
+              <View style={{backgroundColor : 'white', height : 150, width : width-50, alignSelf : 'center', marginTop : height/2}}>
+                  < BarIndicator count={5} color="orange" size={28}/>
+                  <View style={{ position : 'absolute', alignSelf : 'center', marginTop : 100}}>
+                    <Text style={{color : 'orange', fontSize : 18}}>Loading informations</Text>
+                  </View>
+              </View>
+          </View>
+        </Modal>
         {/* Button menu untuk membuka drawer */}
         <Button transparent light style={{zIndex:1,position:'absolute', marginTop:"2%", marginLeft: -2}} onPress={()=>this.openControlPanel()}>
           <Icon style={{color:'black', fontSize:30}} name='menu' />

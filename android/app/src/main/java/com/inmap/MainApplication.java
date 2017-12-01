@@ -3,6 +3,7 @@ package com.inmap;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.showlocationservicesdialogbox.LocationServicesDialogBoxPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.devfd.RNGeocoder.RNGeocoderPackage;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new LocationServicesDialogBoxPackage(),
             new PhotoViewPackage(),
             new ImageResizerPackage(),
             new RNGeocoderPackage(),

@@ -13,6 +13,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  TextInput,
   ScrollView,
   View,
   BackHandler,
@@ -25,9 +26,10 @@ import Geocoder from 'react-native-geocoder';
 import DatePicker from 'react-native-datepicker';
 import RNFetchBlob from 'react-native-fetch-blob';
 import { StackNavigator  } from 'react-navigation';
-import { NavigationActions } from 'react-navigation';
 import ImageResizer from 'react-native-image-resizer';
-import FitImage from 'react-native-fit-image';
+import PhotoView from 'react-native-photo-view';
+import { TextField } from 'react-native-material-textfield';
+
 var ImagePicker = require("react-native-image-picker");
 var{width,height}=Dimensions.get('window');
 const polyfill = RNFetchBlob.polyfill;
@@ -72,7 +74,8 @@ export default class FreeEvent extends Component {
                     items: []
                 },
                 modalVisible : false,
-                animating : true
+                animating : true,
+                modalImage : false
             }
         }
 
@@ -165,7 +168,8 @@ uploadEvent=()=>{
 
     var database = firebase.database().ref("showEvent/"+this.state.adminArea+"/FreeEvent");
     var slicestring = this.state.description;
-    var descriptionSlice = slicestring.slice(0, 20);
+    var descriptionSliced = slicestring.slice(0, 20);
+    var descriptionSlice = descriptionSliced+"...";
 
     database.push({
       sortTime: sortTime,
@@ -302,13 +306,10 @@ componentWillUnmount(){
 
         render() {
            const { navigate } = this.props.navigation;
-           const  backAction  = NavigationActions.back({
-            key : 1
-           });
            const {goBack} = this.props.navigation;
 
             return (
-                <Container>
+                <View style={{height : height, width : width}}>
                   <Modal
                       animationType = {"fade"}
                       transparent   = {true}
@@ -334,22 +335,48 @@ componentWillUnmount(){
                       </View>
                     </View>
                   </Modal>
+                 
+                   {/*menampilkan modal untuk melihat gambar lebih jelas*/}
+                   <Modal
+                      animationType = {"fade"}
+                      transparent   = {false}
+                      visible       = {this.state.modalImage} onRequestClose ={()=>{this.setState({modalImage : false});}}
+                  >
+                    <View style={{flex : 1, backgroundColor : "black", alignSelf:"center"}}>
 
-                  <Card style={{height:'100%'}}>
-                        <View style={{backgroundColor:'#2f2f2f', height:0.5, width:'90%', alignSelf:'center'}}></View>
-                       <ScrollView>
-                          <CardItem>
-                              <Body>
+                      <PhotoView
+                      source={this.state.imagePath}
+                      minimumZoomScale={0.5}
+                      maximumZoomScale={3}
+                      androidScaleType="center"
+                      onLoad={() => console.log("Image loaded!")}
+                      style={{width: width, height: height}} />
 
+            
+                    </View>
+                  </Modal>
+                  {/*modal end*/}
+                  
+                  <View style={{width : width,height : 70, backgroundColor : 'white', borderBottomWidth : 0.3, flexDirection : 'row', paddingTop : 30}}>
+                      <TouchableOpacity onPress={()=>this.backPressed()}>
+                          <Icon name="arrow-back" style={{color : 'black', marginLeft : 5}}/>
+                      </TouchableOpacity>
+                      <Text style={{color : "black", fontSize : 20, marginLeft : width/3.5}}>Your Event</Text>
+                  </View>
+                  <View style={{width : width, backgroundColor : 'white', height : height}}> 
+                     <Content>
                       {/* image yang dipilih dan tombol tambah untuk menambahkan gambar dari device*/}
-                            
-                                <Image style={{height:200,width:200, resizeMode:"cover",alignSelf:'center', marginTop : 10}} source={this.state.imagePath} />
+                                <TouchableOpacity onPress={()=>this.setState({modalImage : true})}>
+                                  <Image style={{height:200,width:width, resizeMode:"cover",alignSelf:'center', marginTop : 10}} source={this.state.imagePath} />
+                                </TouchableOpacity>
                                 <Button onPress={()=>this.GetImagePath()}
+                                
                                  style={{alignSelf:'center', backgroundColor:'#f39c12', marginTop: '10%', width : width-50}}>
                                   <Icon name="camera" style={{color : 'white', marginLeft : width/2.8}}/>
                                 </Button>
 
                               {/* MEMBUAT DATEPICKER */}
+                              <View style={{width : width, paddingLeft : 15}}>
                                 <Text style={{marginTop: '2%'}}>Event Date</Text>
                                 <DatePicker
                                   style={{width: 200, marginTop:"2%"}}
@@ -381,6 +408,7 @@ componentWillUnmount(){
                                   placeholder="End Date"
                                   format="D/M/YYYY"
                                   confirmBtnText="Confirm"
+                                  minDate={this.state.dateStart}
                                   cancelBtnText="Cancel"
                                   customStyles={{
                                     dateIcon: {
@@ -396,18 +424,19 @@ componentWillUnmount(){
                                   }}
                                   onDateChange={(date) => {this.setState({dateEnd: date})}}
                                 />
-
+                                </View>
                                
                                 <Input  placeholder='Write a Title ... ' style={{fontSize:14, borderColor : 'black', borderWidth : 1, marginTop : "2%", width : width-30, alignSelf : 'center'}} onChangeText={(title)=>this.setState({title})}/>
                              
-                                <Input  onChangeText={(description)=>
-                                    this.setState({description})} style={{fontSize:14, height: 200, width : width-30, borderColor : 'black', borderWidth : 1, alignSelf : 'center', marginTop : "2%"}} placeholder='Write a Description ... '  multiline = {true}/>
-                                
-                              </Body>
-                          </CardItem>
-                          <Container>
+                                <TextInput  onChangeText={(description)=>
+                                    this.setState({description})} underlineColorAndroid="transparent" style={{fontSize:14, height: 200, width : width-30, borderColor : 'black', borderWidth : 1, alignSelf : 'center', marginTop : "2%"}} placeholder='Write a Description ... ' 
+                                     multiline = {true} numberOfLines={ 100}
+                                     blurOnSubmit={false}
+                                />
+                            
+                          <View style={{width : width, height : 450, marginTop : 5}}>
                           
-                            <View style={{backgroundColor : "yellow"}}>
+                            <View style={{backgroundColor : "white"}}>
 
                             <View style={styles.mapView}>
                                <Item rounded style={{alignSelf:"center",height:40,width:"95%", marginTop: '2%', backgroundColor : "rgba(44,28,1,0.1)",borderWidth:0.01, borderColor : "white"}}>
@@ -473,10 +502,10 @@ componentWillUnmount(){
                             </Button>
 
                             {/** MapView END **/}
-                          </Container>
-                        </ScrollView>
-                   </Card>
-              </Container>
+                          </View>
+                        </Content>
+                      </View>    
+              </View>
             );
         }
 }

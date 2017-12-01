@@ -39,36 +39,36 @@ export default class Login extends Component{
           animating: true
       };
 
-      const { navigate } = this.props.navigation;
 
-      /** Get AsyncStorage START **/
-      AsyncStorage.multiGet(['email', 'password']).then((data) => {
-          let email = data[0][1];
-          let password = data[1][1];
-         
-          if (email !== null) {
-              this.setState({modalVisible: true, animating: true});
+     
+    const { navigate } = this.props.navigation;  
+    /** Get AsyncStorage START **/
+    AsyncStorage.multiGet(['email', 'password']).then((data) => {
+        let email = data[0][1];
+        let password = data[1][1];
+        
+        if (email !== null) {
+             
+            this.setState({modalVisible: true, animating: true});
 
-              firebaseApp.auth().signInWithEmailAndPassword(email, password).then(() => {
-                  /*goto dashboard*/
-                  this.setState({modalVisible : false,animating : false});
-                  navigate('Dashboard');
+            firebaseApp.auth().signInWithEmailAndPassword(email, password).then(() => {
+                /*goto dashboard*/
+                this.setState({modalVisible : false,animating : false});
+                navigate('Dashboard');
 
-              }).catch((error) => {
-                  alert("error " + error.message );
-                  this.setState({modalVisible:false, animating:false});
-              });
-          }
-      });
-      /** Get AsyncStorage END **/
-
+            }).catch((error) => {
+                alert("error " + error.message );
+                this.setState({modalVisible:false, animating:false});
+            });
+        }
+    });
+    /** Get AsyncStorage END **/
   }
 
   closeActivityIndicator = () => setTimeout(() => this.setState({animating:false}),20000)
   componentDidMount = () => this.closeActivityIndicator()
 
 /******************************** Login Function START ************************************************/
-
   signup(){
       firebaseApp.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then(() => {
           alert('create success');

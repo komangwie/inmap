@@ -25,7 +25,7 @@ var arr = new Array();
 
 export default class Following extends Component {
 static navigationOptions = {
-      title : "Following",
+      header : null
        };
 constructor(props) {
   super(props);
@@ -130,7 +130,12 @@ database.on("child_removed", (dataSnapshot)=>{
               />
           </View>
       </Modal>
-
+      <View style={{width : width,height : 70, backgroundColor : 'white', borderBottomWidth : 0.3, flexDirection : 'row', paddingTop : 30}}>
+          <TouchableOpacity onPress={()=>this.backPressed()}>
+              <Icon name="arrow-back" style={{color : 'black', marginLeft : 5}}/>
+          </TouchableOpacity>
+          <Text style={{color : "black", fontSize : 20, marginLeft : width/3}}>Following</Text>
+      </View>
       <ListView
         style={{marginTop : "2%"}}
         dataSource={this.state.listSource}

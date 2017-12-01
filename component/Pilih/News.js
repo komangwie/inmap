@@ -17,7 +17,8 @@ import {
   View,
   BackHandler,
   Modal,
-  ActivityIndicator
+  ActivityIndicator,
+  TextInput
 } from 'react-native';
 import * as firebase from 'firebase';
 import MapView from 'react-native-maps';
@@ -28,6 +29,7 @@ import { StackNavigator  } from 'react-navigation';
 import { NavigationActions } from 'react-navigation';
 import ImageResizer from 'react-native-image-resizer';
 var ImagePicker = require("react-native-image-picker");
+import PhotoView from 'react-native-photo-view';
 var{width,height}=Dimensions.get('window');
 const polyfill = RNFetchBlob.polyfill;
 
@@ -64,7 +66,8 @@ export default class News extends Component {
                 url : '',
                 username : '',
                 modalVisible : false,
-                animating : true
+                animating : true,
+                modalImage : false
             }
              this.userId = firebase.auth().currentUser.uid;
         }
@@ -337,7 +340,7 @@ componentDidMount(){
            const {goBack} = this.props.navigation;
 
             return (
-                <Container>
+              <View style={{height : height, width : width}}>
                    <Modal
                       animationType = {"fade"}
                       transparent   = {true}
@@ -363,15 +366,39 @@ componentDidMount(){
                       </View>
                     </View>
                   </Modal>
+                  {/*menampilkan modal untuk melihat gambar lebih jelas*/}
+                  <Modal
+                      animationType = {"fade"}
+                      transparent   = {false}
+                      visible       = {this.state.modalImage} onRequestClose ={()=>{this.setState({modalImage : false});}}
+                  >
+                    <View style={{flex : 1, backgroundColor : "black", alignSelf:"center"}}>
 
-                  <Card style={{height:'100%'}}>
-                        <View style={{backgroundColor:'#2f2f2f', height:0.5, width:'90%', alignSelf:'center'}}></View>
-                       <ScrollView>
-                          <CardItem>
-                              <Body>
+                      <PhotoView
+                      source={this.state.imagePath}
+                      minimumZoomScale={0.5}
+                      maximumZoomScale={3}
+                      androidScaleType="center"
+                      onLoad={() => console.log("Image loaded!")}
+                      style={{width: width, height: height}} />
+
+            
+                    </View>
+                  </Modal>
+                  {/*modal end*/}
+                  <View style={{width : width,height : 70, backgroundColor : 'white', borderBottomWidth : 0.3, flexDirection : 'row', paddingTop : 30}}>
+                      <TouchableOpacity onPress={()=>this.backPressed()}>
+                          <Icon name="arrow-back" style={{color : 'black', marginLeft : 5}}/>
+                      </TouchableOpacity>
+                      <Text style={{color : "black", fontSize : 20, marginLeft : width/3.3}}>Your News</Text>
+                  </View>
+                  <View style={{width : width, backgroundColor : 'white', height : height}}> 
+                     <Content>
 
                       {/* image yang dipilih dan tombol tambah untuk menambahkan gambar dari device*/}
+                              <TouchableOpacity onPress={()=>this.setState({modalImage : true})}>
                                 <Image style={{height:200,width:200, resizeMode:"cover",alignSelf:'center', marginTop : 10}} source={this.state.imagePath} /> 
+                              </TouchableOpacity>
                                 <Button onPress={()=>this.GetImagePath()}
                                 style={{alignSelf:'center', backgroundColor:'#f39c12', marginTop: '10%', width : width-50}}>
                                 <Icon name="camera" style={{color : 'white', marginLeft : width/2.8}}/>
@@ -381,14 +408,13 @@ componentDidMount(){
                                 <Input maxLength={100} placeholder='News Title ... ' style={{fontSize:14, borderColor : 'black', borderWidth : 1, marginTop : "2%", width : width-50, alignSelf : 'center'}}  onChangeText={(title)=>this.setState({title})}/>
                                
                                 
-                                <Input maxLength={1000} onChangeText={(description)=>
-                                    this.setState({description})} style={{fontSize:14, height: 200, width : width-50, borderColor : 'black', borderWidth : 1, alignSelf : 'center', marginTop : "2%"}} placeholder='News Description ... '  multiline = {true} numberOfLines = {4}/>
+                                <TextInput maxLength={1000} onChangeText={(description)=>
+                                    this.setState({description})} underlineColorAndroid="transparent" style={{fontSize:14, height: 200, width : width-50, borderColor : 'black', borderWidth : 1, alignSelf : 'center', marginTop : "2%"}} placeholder='News Description ... '  multiline = {true} numberOfLines = {4}/>
                                 
-                              </Body>
-                          </CardItem>
-                          <Container>
+                             
+                           <View style={{width : width, height : 450, marginTop : 5}}>
 
-                            <View style={{backgroundColor : "yellow"}}>
+                            <View>
 
                             <View style={styles.mapView}>
                                <Item rounded style={{alignSelf:"center",height:40,width:"95%", marginTop: '2%', backgroundColor : "rgba(44,28,1,0.1)",borderWidth:0.01, borderColor : "white"}}>
@@ -464,10 +490,10 @@ componentDidMount(){
                             </Button>
 
                             {/** MapView END **/}
-                          </Container>
-                        </ScrollView>
-                   </Card>
-              </Container>
+                          </View>
+                       </Content>
+                    </View>
+              </View>
             );
         }
 }

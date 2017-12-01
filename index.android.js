@@ -28,7 +28,7 @@ import News from './component/Pilih/News';
 import NewsDashboard from './component/Pilih/NewsDashboard';
 import DetailNews from './component/Pilih/DetailNews';
 import Tes from './tes';
-
+console.disableYellowBox = true;
 export default class inmap extends Component {
   static navigationOptions = {
       header : null

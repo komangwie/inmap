@@ -63,6 +63,7 @@
 		972AE74108774D38B9875B78 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AF6341852DB41E59713D383 /* Zocial.ttf */; };
 		5726F2D5BCF24AB49B55DA81 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A2081D5E148B4C06908DC3FC /* libRCTImageResizer.a */; };
 		583D8F16A6B744BF85C57830 /* libRNPhotoView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ABE6067462741C294E884BA /* libRNPhotoView.a */; };
+		26E573CCCACE4534B86C9A97 /* libAutoGrowTextInput.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5C188C265B4CCB8AFE8997 /* libAutoGrowTextInput.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -316,6 +317,8 @@
 		A2081D5E148B4C06908DC3FC /* libRCTImageResizer.a */ = {isa = PBXFileReference; name = "libRCTImageResizer.a"; path = "libRCTImageResizer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		6181EA216EAF4CD6826F9E7F /* RNPhotoView.xcodeproj */ = {isa = PBXFileReference; name = "RNPhotoView.xcodeproj"; path = "../node_modules/react-native-photo-view/ios/RNPhotoView.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		0ABE6067462741C294E884BA /* libRNPhotoView.a */ = {isa = PBXFileReference; name = "libRNPhotoView.a"; path = "libRNPhotoView.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		47313040B1CE49CCB6F9E9CA /* AutoGrowTextInput.xcodeproj */ = {isa = PBXFileReference; name = "AutoGrowTextInput.xcodeproj"; path = "../node_modules/react-native-autogrow-textinput/ios/AutoGrowTextInput.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		0E5C188C265B4CCB8AFE8997 /* libAutoGrowTextInput.a */ = {isa = PBXFileReference; name = "libAutoGrowTextInput.a"; path = "libAutoGrowTextInput.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -348,6 +351,7 @@
 				78CF319EEC6A42DAA5ED630A /* libRNVectorIcons.a in Frameworks */,
 				5726F2D5BCF24AB49B55DA81 /* libRCTImageResizer.a in Frameworks */,
 				583D8F16A6B744BF85C57830 /* libRNPhotoView.a in Frameworks */,
+				26E573CCCACE4534B86C9A97 /* libAutoGrowTextInput.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,6 +524,7 @@
 				0A3C9A1074114011A929468D /* RNVectorIcons.xcodeproj */,
 				CA642852FF7C4ADC88B900EF /* RCTImageResizer.xcodeproj */,
 				6181EA216EAF4CD6826F9E7F /* RNPhotoView.xcodeproj */,
+				47313040B1CE49CCB6F9E9CA /* AutoGrowTextInput.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1106,6 +1111,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1115,6 +1121,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-image-resizer\ios\RCTImageResizer",
 					"$(SRCROOT)\..\node_modules\react-native-photo-view\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-autogrow-textinput\ios",
 				);
 			};
 			name = Debug;
@@ -1141,6 +1148,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1150,6 +1158,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-image-resizer\ios\RCTImageResizer",
 					"$(SRCROOT)\..\node_modules\react-native-photo-view\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-autogrow-textinput\ios",
 				);
 			};
 			name = Release;
@@ -1177,6 +1186,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-image-resizer\ios\RCTImageResizer",
 					"$(SRCROOT)\..\node_modules\react-native-photo-view\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-autogrow-textinput\ios",
 				);
 			};
 			name = Debug;
@@ -1203,6 +1213,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-image-resizer\ios\RCTImageResizer",
 					"$(SRCROOT)\..\node_modules\react-native-photo-view\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-autogrow-textinput\ios",
 				);
 			};
 			name = Release;
@@ -1238,6 +1249,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1247,6 +1259,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-image-resizer\ios\RCTImageResizer",
 					"$(SRCROOT)\..\node_modules\react-native-photo-view\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-autogrow-textinput\ios",
 				);
 			};
 			name = Debug;
@@ -1282,6 +1295,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1291,6 +1305,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-vector-icons\RNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-image-resizer\ios\RCTImageResizer",
 					"$(SRCROOT)\..\node_modules\react-native-photo-view\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-autogrow-textinput\ios",
 				);
 			};
 			name = Release;
@@ -1321,6 +1336,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
 			name = Debug;
@@ -1345,6 +1361,7 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

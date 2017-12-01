@@ -19,6 +19,7 @@ import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoder';
 import { StackNavigator  } from 'react-navigation';
 import DatePicker from 'react-native-datepicker';
+import PhotoView from 'react-native-photo-view';
 import { Picker, Label, Container,Footer, FooterTab, Form, Item, Input, Content, ListItem, CheckBox, Header, Left, Right, Body, Button, Icon, Title, Subtitle, Thumbnail, CardItem, Card } from 'native-base';
 var{width,height}=Dimensions.get('window');
 var arr = new Array();
@@ -38,7 +39,8 @@ export default class DetailNews extends Component {
         newsPicture : '',
         modalVisible : true,
         newsPost : '',
-        address : ''
+        address : '',
+        modalImage : false
   });
   }
 
@@ -66,7 +68,7 @@ componentDidMount(){
         newsPicture : dataSnapshot.val().newsPhoto,
         description : dataSnapshot.val().newsDescription,
         newsPost : dataSnapshot.val().created_at,
-        address : dataSnapshot.val().eventLocation,
+        address : dataSnapshot.val().newsLocation,
         modalVisible : false
     });
   });
@@ -75,76 +77,71 @@ componentDidMount(){
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <Container>
-          <Content>
-              <Card style={{ flex: 0 }}>
-                  <CardItem>
-                      <Left>
-                          <Thumbnail  source={{uri:this.props.navigation.state.params.photoProfil}} />
-                          <Body>
-                              <Text>{this.props.navigation.state.params.username}</Text>
-                             {/* <Text note>April 15, 2016 20:10</Text>  */}
-                          </Body>
-                      </Left>
-                  </CardItem>
-                  <CardItem>
-                    <Body style={{backgroundColor: '#f2f2f2', height: 2}}></Body>
-                  </CardItem>
-                  <CardItem>
-                      <Body>
-                          <Image style={{height: 250, width: '100%'}} source={{uri : this.state.newsPicture}} />
-                          <Text style={{marginTop:'2%', fontSize: 20}} >
-                              {this.props.navigation.state.params.title}
-                          </Text>
+      <View style={{height : height, width : width, backgroundColor : 'white'}}>
+        <View style={{width : width,height : 80, backgroundColor : 'white', borderBottomWidth : 0.3, flexDirection : 'row', paddingTop : 40}}>
+            <TouchableOpacity onPress={()=>this.backPressed()}>
+                <Icon name="arrow-back" style={{color : 'black', marginLeft : 10}}/>
+            </TouchableOpacity>
+            <Text style={{color : "black", fontSize : 20, marginLeft : width/3.5}}>News Detail</Text>
+        </View>
+      <Content>
+        <View style={{width : width, flexDirection : 'row', marginTop : -20}}>
+              <Thumbnail  source={{uri:this.props.navigation.state.params.photoProfil}}  style={{marginTop : 30, marginLeft : 10}} />
+              <Text style={{marginLeft : 5, fontSize : 18, marginTop : 45}}>{this.props.navigation.state.params.username}</Text>
+        </View>
+        <View style={{marginLeft : 80,width : width-80, height : 1, backgroundColor : 'grey'}}></View>
+        <View style={{height : 200, width: width, alignSelf:"center", marginTop : 20}}>
+        {/*bagian image*/}
+          <TouchableOpacity onPress={()=>{this.setState({modalImage:true});}}>
+              <Image
+              source={{uri : this.state.newsPicture}}
+                resizeMode="contain"
+              style={{height :200, width :width, alignSelf : "center"}}
+              />
+          </TouchableOpacity>
+            
+            {/*menampilkan modal untuk melihat gambar lebih jelas*/}
+            <Modal
+                animationType = {"fade"}
+                transparent   = {false}
+                visible       = {this.state.modalImage} onRequestClose ={()=>{this.setState({modalImage : false});}}
+            >
+              <View style={{flex : 1, backgroundColor : "black", alignSelf:"center"}}>
 
-                          <Text note style={{textAlign: 'justify',marginTop:'2%'}}>
-                             {this.state.description}
-                          </Text>
+                <PhotoView
+                source={{uri : this.state.newsPicture}}
+                minimumZoomScale={0.5}
+                maximumZoomScale={3}
+                androidScaleType="center"r
+                style={{width: width, height: height}} />
+              </View>
+            </Modal>
+            {/*modal end*/}
+          </View>
+          <Text style={{marginTop:'2%', fontSize: 18,  color : "black", fontWeight: "bold", textAlign : "center", alignSelf : "center"}} >
+             {this.props.navigation.state.params.title}
+          </Text>
 
-                          <Text note style={{textAlign: 'justify',marginTop:'2%'}}>
-                             Post on : {this.state.newsPost}
-                          </Text>
+        <Text note style={{textAlign: 'justify',marginTop:'2%', marginLeft : 5, color : 'black'}}>
+            {this.state.description}
+        </Text>
+        <View style={{width : width, height : 0.2, backgroundColor : 'grey', marginTop : 10}}></View>
+        <View style={{flexDirection : 'row', marginTop : 10, marginLeft : 5}}>
+          <Icon name="calendar" style={{fontSize : 40, color : 'orange'}}/>
+          <Text note style={{textAlign: 'justify',marginTop:10,  color : "black", fontWeight: "bold", marginLeft : 5, fontSize : 16}}>
+               {this.state.newsPost}
+          </Text>
+        </View>
 
-                          <Text note style={{textAlign: 'justify',marginTop:'2%'}}>
-                            News Location : {this.state.address}
-                          </Text>
-
-                          
-                      </Body>
-                  </CardItem>
-                   {/*   <Text style={{marginLeft:'5%'}}>Comment</Text>
-                      <ListItem avatar >
-                          <Left>
-                          <Thumbnail source={{uri:'https://firebasestorage.googleapis.com/v0/b/inmap-2a392.appspot.com/o/user.png?alt=media&token=e9490617-6452-4983-bb97-7e9a095a3bf6'}} />
-                          </Left>
-                          <Body>
-                            <Text>@Agung Rahadian</Text>
-                            <Text note>Melali ke Danau Tempe</Text>
-                          </Body>
-                          <Right>
-                              <Text note>3:43 pm</Text>
-                          </Right>
-                      </ListItem>
-                  <CardItem>
-                    <Body>
-                      <Item regular style={{height:40, marginTop: '2%'}}>
-                        <Input placeholder='Write a Title ... ' style={{fontSize:14}}/>
-                      </Item>
-                      <Button style={{marginTop: '2%', alignSelf:'flex-end', backgroundColor:'#f39c12'}}>
-                        <Text style={{fontSize:10, color: '#fff'}}>Comment</Text>
-                      </Button>
-                    </Body>
-                  </CardItem>*/}
-               </Card>
-          </Content>
-            {/*<Footer>
-              <FooterTab style={{backgroundColor:'#8f8f8f'}}>
-                <Button>
-                  <Image  style={{width: 40, height: 40}} />
-                </Button>
-              </FooterTab>
-            </Footer> */}
-      </Container>
+        <View style={{flexDirection : 'row', width : width-5, marginLeft : 5,paddingRight : 30}}>
+          <Icon name="map" style={{fontSize : 40, color : 'orange'}}/>
+          <Text note style={{textAlign: 'justify', marginLeft : 5, color : 'black', fontSize : 14, fontWeight : 'bold'}}>
+             {this.state.address}
+          </Text>
+        
+        </View>
+      </Content>
+  </View>
     );
   }
 

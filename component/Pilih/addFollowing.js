@@ -23,7 +23,7 @@ var{width,height}=Dimensions.get('window');
 export default class addFollowing extends Component {
 
 static navigationOptions = {
-      title : "Add Following"
+     header : null
   };
 
 constructor(props) {
@@ -192,7 +192,12 @@ follow=()=>{
          </TouchableWithoutFeedback>
 
      </Modal>
-
+     <View style={{width : width,height : 70, backgroundColor : 'white', borderBottomWidth : 0.3, flexDirection : 'row', paddingTop : 30}}>
+          <TouchableOpacity onPress={()=>this.backPressed()}>
+              <Icon name="arrow-back" style={{color : 'black', marginLeft : 5}}/>
+          </TouchableOpacity>
+          <Text style={{color : "black", fontSize : 20, marginLeft : width/4}}>Add Following</Text>
+      </View>
       <Item regular style={{alignSelf:"center",height:40,width:"95%", marginTop: '2%'}}>
             <Input onChangeText={(name)=>this.searchFollowing(name)} placeholder='Search... ' style={{fontSize:14}}/>
       </Item>
@@ -211,6 +216,7 @@ follow=()=>{
     const { navigate } = this.props.navigation;
     return(
         <View style={{marginTop : "2%"}}>
+         
           <ListItem avatar onPress={()=>this.userDetail(rowData.photoProfile, rowData.username, rowData.id)}>    
 
           <Thumbnail source={{uri:rowData.photoProfile}} />
