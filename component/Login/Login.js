@@ -8,6 +8,7 @@ import {
     StatusBar,
     Modal,
     ActivityIndicator,
+    Alert
 } from 'react-native';
 import { StackNavigator, navigate } from 'react-navigation';
 import * as firebase from 'firebase';
@@ -96,7 +97,14 @@ export default class Login extends Component{
           this.setState({modalVisible: false, animating: false});
           navigate('Dashboard');
       }).catch((error) => {
-          alert("error " + error.message );
+          //alert("error " + error.message );
+          Alert.alert(
+            'In Map',
+            error.message,
+            [
+              {text: 'OK'}],
+            { cancelable: false }
+          );
           this.setState({modalVisible:false, animating:false});
       });
       /** Firebase Login Auth END **/

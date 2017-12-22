@@ -18,7 +18,8 @@ import {
   View,
   BackHandler,
   Modal,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 import * as firebase from 'firebase';
 import MapView from 'react-native-maps';
@@ -102,7 +103,14 @@ componentWillMount(){
               if (response.didCancel) {
               }
               else if (response.error) {
-                alert("An Error Occurred During Open Library"); // jika terjadi kesalahan saat menggunakan image picker
+               // alert("An Error Occurred During Open Library"); // jika terjadi kesalahan saat menggunakan image picker
+                Alert.alert(
+                  'In Map',
+                  'An Error Occurred During Open Library!',
+                  [
+                    {text: 'OK'}],
+                  { cancelable: false }
+                );
               }
               else if (response.customButton) {
               }
@@ -133,7 +141,15 @@ resizeImage=()=>{
   }).catch((err) => {
     // Oops, something went wrong. Check that the filename is correct and 
     // inspect err to get more details. 
-    alert("Error has Occurred");
+    //alert("Error has Occurred");
+      Alert.alert(
+        'In Map',
+        'Error has Occurred!',
+        [
+          {text: 'OK'}],
+        { cancelable: false }
+      );
+    
   });
 }
 
@@ -151,12 +167,27 @@ searchLocation=()=>{
        // alert(res[0].formattedAddress);
 
     })
-    .catch(err => alert("Your Location Undetected"));
+    .catch(err =>{
+    Alert.alert(
+      'In Map',
+      'Your Location Undetected',
+      [
+        {text: 'OK'}],
+      { cancelable: false }
+    );
+  });
 }
 
 uploadEvent=()=>{
   if(this.state.dateStart == null||this.state.dateEnd==null || this.state.title==null || this.state.description==null){
-    alert(this.state.dateStart+"-"+this.state.dateEnd+"/"+this.state.title+"/"+this.state.description);
+    //alert(this.state.dateStart+"-"+this.state.dateEnd+"/"+this.state.title+"/"+this.state.description);
+    Alert.alert(
+      'In Map',
+      'Please fill all field!',
+      [
+        {text: 'OK'}],
+      { cancelable: false }
+    );
   }
   else{
     this.setState({modalVisible : true});

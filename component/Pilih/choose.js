@@ -85,7 +85,7 @@ componentWillUnmount(){
       </Image>
   <Text>{""}</Text>
       <Content style={{backgroundColor:'white'}}>
-     {/* <ListItem avatar onPress={()=>navigate('Tambah',{user:this.props.navigation.state.params.user,
+     {/* <ListItem avatar onPress={()=>navigate('rrrTambah',{user:this.props.navigation.state.params.user,
         userPhoto:this.props.navigation.state.params.userPhoto,
         myLatitude:this.props.navigation.state.params.myLatitude,
         myLongitude:this.props.navigation.state.params.myLongitude})} >
@@ -99,7 +99,7 @@ componentWillUnmount(){
         <ListItem avatar  onPress={()=>this.gotoFreeEvent()} >
                <Thumbnail style={{width:100, height:100, marginTop:'4%'}} source={require('./../../image/event icon.png')}/>
                <Body style={{marginRight:'2%'}}>
-                 <Text style={styles.bol}>Free Event</Text>
+                 <Text style={styles.bol}>Event</Text>
                  <Text note>Share Your Event for Free, Let Your Friend to Know It</Text>
                </Body>
         </ListItem>

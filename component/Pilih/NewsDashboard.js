@@ -121,7 +121,7 @@ export default class Dashboard extends Component {
 
     var userFollowing = firebase.database().ref().child("following/"+userId);
 
-    var database = firebase.database().ref("showNews/"+this.props.navigation.state.params.adminArea+"/"+this.props.navigation.state.params.regency);
+    var database = firebase.database().ref("showNews/"+this.props.navigation.state.params.adminArea+"/"+this.props.navigation.state.params.regency).orderByChild("sortTime");
     
     userFollowing.on("value", (snapshot)=>{
 

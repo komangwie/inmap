@@ -18,7 +18,8 @@ import {
   BackHandler,
   Modal,
   ActivityIndicator,
-  TextInput
+  TextInput,
+  Alert
 } from 'react-native';
 import * as firebase from 'firebase';
 import MapView from 'react-native-maps';
@@ -127,7 +128,14 @@ resizeImage=()=>{
   }).catch((err) => {
     // Oops, something went wrong. Check that the filename is correct and 
     // inspect err to get more details. 
-    alert("Error has Occurred");
+   // alert("Error has Occurred");
+    Alert.alert(
+      'In Map',
+      'Error has occured!',
+      [
+        {text: 'OK'}],
+      { cancelable: false }
+    );
   });
 }
 
@@ -146,12 +154,26 @@ searchLocation=()=>{
        // alert(res[0].formattedAddress);
 
     })
-    .catch(err => alert("Your Location Undetected"));
+    .catch(err => {
+    Alert.alert(
+      'In Map',
+      'Cannot find location!',
+      [
+        {text: 'OK'}],
+      { cancelable: false }
+    );
+  });
 }
 //
 uploadEvent=()=>{
   if(this.state.title==null || this.state.description==null){
-    alert("Please fill all field");
+    Alert.alert(
+      'In Map',
+      'Please fill all field!',
+      [
+        {text: 'OK'}],
+      { cancelable: false }
+    );
   }
   else{//
     this.setState({modalVisible : true});

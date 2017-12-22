@@ -72,7 +72,7 @@ export default class Dashboard extends Component {
           wellcomeAnimating : true,
           listSource : new ListView.DataSource({rowHasChanged : (row1, row2)=> row1 !== row2}),
           selected: false,
-          loading : true
+          loading : false
       };
       this.backButtonListener = null;
       this.currentRouteName = 'Main';
